@@ -1,0 +1,39 @@
+# ─── API Framework ────────────────────────────────────────────────────────────
+fastapi>=0.111
+uvicorn[standard]>=0.29
+python-multipart
+
+# ─── AI Providers (use one or both) ───────────────────────────────────────────
+openai>=1.30
+google-genai
+
+
+# ─── RAG / Embeddings ─────────────────────────────────────────────────────────
+langchain>=0.2
+langchain-openai
+langchain-google-genai
+pgvector                  # Postgres vector store
+pinecone-client           # Pinecone vector store (alternative)
+
+# ─── Database & Caching ───────────────────────────────────────────────────────
+sqlalchemy[asyncio]>=2.0
+asyncpg
+redis
+alembic
+
+# ─── Auth & Security ──────────────────────────────────────────────────────────
+python-jose[cryptography]
+passlib[bcrypt]
+
+# ─── Config & Validation ──────────────────────────────────────────────────────
+pydantic>=2.0
+pydantic-settings
+python-dotenv
+
+# ─── Rate Limiting & Middleware ───────────────────────────────────────────────
+slowapi
+
+# ─── Dev / Testing ────────────────────────────────────────────────────────────
+pytest
+pytest-asyncio
+httpx
