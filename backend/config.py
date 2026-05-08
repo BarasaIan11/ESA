@@ -28,7 +28,11 @@ class Settings(BaseSettings):
     openai_model: str = Field("gpt-4o", description="OpenAI model name")
 
     gemini_api_key: str = Field("", description="Google Gemini API key")
-    gemini_model: str = Field("gemini-1.5-pro", description="Gemini model name")
+    gemini_model: str = Field("gemini-2.0-flash", description="Gemini model name")
+
+    # ── Groq (free tier, OpenAI-compatible) ──────────────────────────────────
+    groq_api_key: str = Field("", description="Groq API key (free tier available)")
+    groq_model: str = Field("llama-3.3-70b-versatile", description="Groq model name")
 
     # ── Database ──────────────────────────────────────────────────────────────
     database_url: str = Field(

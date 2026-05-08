@@ -32,6 +32,16 @@ def _gemini_client():
     return genai.Client(api_key=settings.gemini_api_key)
 
 
+# ── Groq client (lazy init) ─────────────────────────────────────────────────
+def _groq_client():
+    """Groq is OpenAI-compatible — just point AsyncOpenAI at Groq's base URL."""
+    from openai import AsyncOpenAI
+    return AsyncOpenAI(
+        api_key=settings.groq_api_key,
+        base_url="https://api.groq.com/openai/v1",
+    )
+
+
 # ── Main entry point ──────────────────────────────────────────────────────────
 async def get_ai_response(
     question: str,
@@ -60,6 +70,8 @@ async def get_ai_response(
             answer = await _call_openai(messages)
         elif provider == "gemini":
             answer = await _call_gemini(messages)
+        elif provider == "groq":
+            answer = await _call_groq(messages)
         else:
             raise ValueError(f"Unknown AI provider: '{provider}'")
     except Exception as exc:
@@ -82,6 +94,18 @@ async def _call_openai(messages: list[dict]) -> str:
         model=settings.openai_model,
         messages=messages,  # type: ignore[arg-type]
         temperature=0.2,    # lower = more deterministic, fewer hallucinations
+        max_tokens=1024,
+    )
+    return response.choices[0].message.content or ""
+
+
+async def _call_groq(messages: list[dict]) -> str:
+    """Groq is OpenAI-compatible, so this looks nearly identical to _call_openai."""
+    client = _groq_client()
+    response = await client.chat.completions.create(
+        model=settings.groq_model,
+        messages=messages,  # type: ignore[arg-type]
+        temperature=0.2,
         max_tokens=1024,
     )
     return response.choices[0].message.content or ""

@@ -1,9 +1,4 @@
-try:
-    from genai import Client
-    print("SUCCESS: from genai import Client works")
-except ImportError:
-    try:
-        from google import genai
-        print("SUCCESS: from google import genai works")
-    except ImportError as e:
-        print(f"FAILED: {e}")
+# This file was a temporary test — the correct import is:
+from google import genai  # noqa: F401
+
+print("Import OK: use 'from google import genai'")
