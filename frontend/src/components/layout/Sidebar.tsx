@@ -1,11 +1,20 @@
 import React from 'react';
-import { Plus, MessageSquare, Settings, LogOut, ChevronLeft } from 'lucide-react';
+import { Plus, MessageSquare, Settings, LogOut } from 'lucide-react';
+import type { Session } from '../../App';
 
 interface SidebarProps {
+  sessions: Session[];
+  activeSessionId: string | null;
   onNewChat: () => void;
+  onSelectSession: (session: Session) => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ onNewChat }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ 
+  sessions, 
+  activeSessionId, 
+  onNewChat, 
+  onSelectSession 
+}) => {
   return (
     <aside className="sidebar">
       <div className="p-6 flex flex-col h-full">
@@ -29,19 +38,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNewChat }) => {
           New Thread
         </button>
 
-        {/* History List Placeholder */}
+        {/* History List */}
         <div className="flex-grow overflow-y-auto space-y-2 pr-2">
           <p className="text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-2 px-3">Recent Chats</p>
           
-          <button className="flex items-center gap-3 w-full p-3 rounded-xl bg-white/5 border border-white/10 text-sm font-medium text-slate-300 hover:text-white transition-all">
-            <MessageSquare size={16} className="text-indigo-400" />
-            Chart of Accounts Setup
-          </button>
-          
-          <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-sm font-medium text-slate-400 hover:text-slate-200 transition-all">
-            <MessageSquare size={16} />
-            Payment Terms Info
-          </button>
+          {sessions.length === 0 ? (
+            <p className="px-3 text-xs text-slate-600 italic">No threads yet</p>
+          ) : (
+            sessions.map((session) => (
+              <button 
+                key={session.id}
+                onClick={() => onSelectSession(session)}
+                className={`flex items-center gap-3 w-full p-3 rounded-xl transition-all text-left ${
+                  activeSessionId === session.id 
+                    ? 'bg-white/10 border border-white/20 text-white shadow-sm' 
+                    : 'hover:bg-white/5 text-sm font-medium text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <MessageSquare size={16} className={activeSessionId === session.id ? 'text-indigo-400' : ''} />
+                <span className="truncate">{session.title}</span>
+              </button>
+            ))
+          )}
         </div>
 
         {/* Footer info */}

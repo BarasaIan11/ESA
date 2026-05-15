@@ -172,6 +172,7 @@ h1, h2, h3, .brand-font {
 .text-slate-400 { color: var(--text-muted); }
 .text-indigo-400 { color: #818cf8; }
 .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── Sidebar extra states ──────────────────────────────────────────────────── */
 .bg-white\/5 { background-color: rgba(255,255,255,0.05); }

@@ -5,9 +5,17 @@ import { askQuestion } from '../../api/client';
 import type { Message } from '../../types';
 import { Bot } from 'lucide-react';
 
-export const ChatBox: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [sessionId, setSessionId] = useState<string | undefined>();
+interface ChatBoxProps {
+  messages: Message[];
+  backendSessionId: string | undefined;
+  onSessionUpdate: (newMessages: Message[], sessionId: string) => void;
+}
+
+export const ChatBox: React.FC<ChatBoxProps> = ({ 
+  messages, 
+  backendSessionId, 
+  onSessionUpdate 
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -22,12 +30,18 @@ export const ChatBox: React.FC = () => {
       content: text,
       timestamp: new Date(),
     };
-    setMessages((prev) => [...prev, userMsg]);
+    
+    const newMessagesAfterUser = [...messages, userMsg];
+    // Optimistically update UI via parent
+    // Note: We don't have the final sessionId yet if it's the first message
+    // but the API will return it.
     setIsLoading(true);
 
     try {
-      const response = await askQuestion({ question: text, session_id: sessionId });
-      setSessionId(response.session_id);
+      const response = await askQuestion({ 
+        question: text, 
+        session_id: backendSessionId 
+      });
 
       const assistantMsg: Message = {
         id: crypto.randomUUID(),
@@ -36,7 +50,8 @@ export const ChatBox: React.FC = () => {
         sources: response.sources,
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, assistantMsg]);
+      
+      onSessionUpdate([...newMessagesAfterUser, assistantMsg], response.session_id);
     } catch (err) {
       const errorMsg: Message = {
         id: crypto.randomUUID(),
@@ -44,7 +59,7 @@ export const ChatBox: React.FC = () => {
         content: 'Sorry, I encountered an error. Please check the backend is running and try again.',
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, errorMsg]);
+      onSessionUpdate([...newMessagesAfterUser, errorMsg], backendSessionId || 'error-session');
     } finally {
       setIsLoading(false);
     }
