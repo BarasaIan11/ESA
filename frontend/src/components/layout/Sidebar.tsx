@@ -1,6 +1,6 @@
-import React from 'react';
-import { Plus, MessageSquare, Settings, LogOut } from 'lucide-react';
-import type { Session } from '../../App';
+import React from "react";
+import { Plus, MessageSquare, Settings, LogOut, Bot } from "lucide-react";
+import type { Session } from "../../App";
 
 interface SidebarProps {
   sessions: Session[];
@@ -9,69 +9,76 @@ interface SidebarProps {
   onSelectSession: (session: Session) => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
-  sessions, 
-  activeSessionId, 
-  onNewChat, 
-  onSelectSession 
+export const Sidebar: React.FC<SidebarProps> = ({
+  sessions,
+  activeSessionId,
+  onNewChat,
+  onSelectSession,
 }) => {
   return (
-    <aside className="sidebar">
-      <div className="p-6 flex flex-col h-full">
-        {/* Brand */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <span className="text-white font-bold text-xl brand-font">E</span>
-          </div>
-          <div>
-            <h1 className="text-lg font-bold brand-font leading-tight">ESA</h1>
-            <p className="text-xs text-slate-500 font-medium">ERP Assistant</p>
-          </div>
-        </div>
+    <aside className="w-(--sidebar-width) bg-bg-sidebar border-r border-border-light flex flex-col h-full">
+      <div className="px-4 py-4 border-b border-border-light">
+        <img
+          src="/logo.png"
+          alt="ESA Logo"
+          className="w-full h-auto object-contain"
+          style={{ maxHeight: "80px" }}
+        />
+      </div>
 
-        {/* Action */}
-        <button 
+      <div className="px-4 mb-6">
+        <button
           onClick={onNewChat}
-          className="btn btn-primary w-full mb-6"
+          className="w-full bg-accent-primary hover:bg-accent-hover text-white py-2.5 px-4 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
         >
-          <Plus size={18} />
+          <Plus size={16} strokeWidth={3} />
           New Thread
         </button>
+      </div>
 
-        {/* History List */}
-        <div className="flex-grow overflow-y-auto space-y-2 pr-2">
-          <p className="text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-2 px-3">Recent Chats</p>
-          
+      <nav className="flex-1 px-2 overflow-y-auto">
+        <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+          RECENT
+        </div>
+        <div className="space-y-0.5">
           {sessions.length === 0 ? (
-            <p className="px-3 text-xs text-slate-600 italic">No threads yet</p>
+            <div className="px-3 py-2 text-xs text-slate-400 italic">
+              No history yet
+            </div>
           ) : (
             sessions.map((session) => (
-              <button 
+              <div
                 key={session.id}
                 onClick={() => onSelectSession(session)}
-                className={`flex items-center gap-3 w-full p-3 rounded-xl transition-all text-left ${
-                  activeSessionId === session.id 
-                    ? 'bg-white/10 border border-white/20 text-white shadow-sm' 
-                    : 'hover:bg-white/5 text-sm font-medium text-slate-400 hover:text-slate-200'
+                className={`flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer transition-colors ${
+                  activeSessionId === session.id
+                    ? "bg-white text-accent-primary shadow-sm font-medium"
+                    : "text-slate-600 hover:bg-slate-200/50"
                 }`}
               >
-                <MessageSquare size={16} className={activeSessionId === session.id ? 'text-indigo-400' : ''} />
-                <span className="truncate">{session.title}</span>
-              </button>
+                <MessageSquare
+                  size={16}
+                  className={
+                    activeSessionId === session.id
+                      ? "text-accent-primary"
+                      : "text-slate-400"
+                  }
+                />
+                <span className="text-sm truncate">{session.title}</span>
+              </div>
             ))
           )}
         </div>
+      </nav>
 
-        {/* Footer info */}
-        <div className="mt-auto pt-6 space-y-2 border-t border-white/5">
-          <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-sm font-medium text-slate-400 hover:text-slate-200 transition-all">
-            <Settings size={18} />
-            Settings
-          </button>
-          <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-red-500/10 text-sm font-medium text-slate-400 hover:text-red-400 transition-all">
-            <LogOut size={18} />
-            Sign Out
-          </button>
+      <div className="p-4 border-t border-border-light space-y-1 mt-auto">
+        <div className="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/50 rounded-md cursor-pointer transition-colors">
+          <Settings size={18} />
+          <span className="text-sm font-medium">Settings</span>
+        </div>
+        <div className="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/50 rounded-md cursor-pointer transition-colors">
+          <LogOut size={18} />
+          <span className="text-sm font-medium">Sign Out</span>
         </div>
       </div>
     </aside>

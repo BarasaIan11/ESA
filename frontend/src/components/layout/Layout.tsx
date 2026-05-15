@@ -18,14 +18,14 @@ export const Layout: React.FC<LayoutProps> = ({
   onSelectSession,
 }) => {
   return (
-    <div className="app-layout">
+    <div className="flex h-screen w-screen overflow-hidden bg-bg-app">
       <Sidebar
         sessions={sessions}
         activeSessionId={activeSessionId}
         onNewChat={onNewChat}
         onSelectSession={onSelectSession}
       />
-      <main className="main-content">
+      <main className="flex-1 flex flex-col min-w-0 bg-white shadow-inner">
         {children}
       </main>
     </div>
