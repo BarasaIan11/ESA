@@ -50,16 +50,14 @@ async def get_ai_response(
 ) -> tuple[str, list[str]]:
     """
     Build the prompt and call the active AI provider.
-
-    Args:
-        question:   The user's raw question.
-        history:    Prior conversation messages for this session.
-        rag_chunks: Retrieved document chunks (empty until Phase 2 RAG is live).
-
-    Returns:
-        (answer, sources) — answer text and list of source references.
     """
-    chunks = rag_chunks or []
+    # Phase 2: Fetch RAG context if not already provided
+    if rag_chunks is None:
+        from services.retriever import query_knowledge_base
+        chunks = query_knowledge_base(question)
+    else:
+        chunks = rag_chunks
+
     context_block = build_context_block(chunks)
     messages = build_messages(history, context_block, question)
 
