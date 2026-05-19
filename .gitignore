@@ -7,6 +7,8 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+*.pyc
+
 
 # Virtual environment
 .venv/
@@ -33,6 +35,13 @@ frontend/.env.local
 
 # Knowledge base raw files (usually large)
 knowledge_base/raw/
+knowledge_base/
+vector_db/
+chroma_db/
+*.sqlite3
+*.pdf
+*.docx
+*.csv
 
 # OS
 .DS_Store
