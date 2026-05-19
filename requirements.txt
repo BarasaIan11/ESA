@@ -18,7 +18,7 @@ pypdf
 langchain-openai
 langchain-google-genai
 pgvector                  # Postgres vector store
-pinecone-client           # Pinecone vector store (alternative)
+pinecone                  # Pinecone vector store (alternative)
 
 # ─── Database & Caching ───────────────────────────────────────────────────────
 sqlalchemy[asyncio]>=2.0
