@@ -64,7 +64,11 @@ app.add_middleware(
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(chat.router, prefix="/chat", tags=["Chat"])
 
-
+# ── Root route (Render health check) ──────────────────────────────────────────
+@app.get("/", tags=["System"])
+async def root():
+    """Root route — prevents 404 on Render's health check ping."""
+    return {"status": "ESA backend is running"}
 # ── Health check ──────────────────────────────────────────────────────────────
 @app.get("/health", tags=["System"])
 async def health_check():

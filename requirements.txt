@@ -11,14 +11,12 @@ google-genai
 # ─── RAG / Embeddings ─────────────────────────────────────────────────────────
 langchain>=0.2
 langchain-community
-langchain-huggingface
-chromadb
-sentence-transformers
 pypdf
 langchain-openai
 langchain-google-genai
-pgvector                  # Postgres vector store
-pinecone                  # Pinecone vector store (alternative)
+langchain-text-splitters
+pgvector                  # Postgres vector store(optional)
+pinecone                  # Pinecone vector store (active)
 
 # ─── Database & Caching ───────────────────────────────────────────────────────
 sqlalchemy[asyncio]>=2.0
